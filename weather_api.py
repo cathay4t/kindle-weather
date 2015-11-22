@@ -14,54 +14,73 @@
 # License along with this library; If not, see <http://www.gnu.org/licenses/>.
 #
 # Author: Gris Ge <fge@redhat.com>
+import datetime
+import json
+from urllib2 import urlopen
+
+def _fetch_json(url):
+    json_str = urlopen(url).read()
+    return json.loads(json_str)
+
+
+def _parse_forecast(data_json):
+    """
+    [(condition, max, min), ... ]
+    """
+    tmp_list = []
+    for data in data_json["forecast"]["simpleforecast"]["forecastday"]:
+        tmp_list.append(WeatherData(data["icon"], data["high"]["celsius"],
+                                    data["low"]["celsius"]))
+    return tmp_list
+
+
+class WeatherData(object):
+    def __init__(self, condition, temp_max, temp_min):
+        self.condition = condition
+        self.temp_max = temp_max
+        self.temp_min = temp_min
+
 
 class WeatherAPI(object):
+
+    _BASE_API_URL = "http://api.wunderground.com/api/"
 
     CONDITION_LIGHT_RAIN = "shra"
     CONDITION_LIGHT_CLOUD_SUN = "bkn"
 
-    def __init__(self):
-        pass
+    def __init__(self, api_key, lat, lon):
+        url_api_key = "appid=%s" % api_key
+        url_location = "lat=%s&lon=%s" % (lat, lon)
 
-    def temp_high(self, day):
+        forecast_json = _fetch_json("%s/%s/forecast/q/%s,%s.json" %
+                (WeatherAPI._BASE_API_URL, api_key, lat, lon))
+
+        self._data = _parse_forecast(forecast_json)
+        self._today = datetime.date.today()
+
+    def temp_max(self, day):
         """
-        Input day as integer, 0 means today, 1 means tomorrow.
+        Input day as integer, 0 means today, 1 means tomorrow, max is 3.
         Return
         """
-        if (day == 0):
-            return 19
-        if (day == 1):
-            return 19
-        if (day == 2):
-            return 19
-        if (day == 3):
-            return 16
-        if (day == 4):
-            return 16
+        if day > 3:
+            raise Exception("Invalid day, should less or equal to 3")
 
-    def temp_low(self, day):
-        if (day == 0):
-            return 13
-        if (day == 1):
-            return 14
-        if (day == 2):
-            return 14
-        if (day == 3):
-            return 11
-        if (day == 4):
-            return 9
+        return self._data[day].temp_max
+
+    def temp_min(self, day):
+        if day > 3:
+            raise Exception("Invalid day, should less or equal to 3")
+        return self._data[day].temp_min
 
     def condition(self, day):
-        if (day == 0):
-            return WeatherAPI.CONDITION_LIGHT_RAIN
-        if (day == 1):
-            return WeatherAPI.CONDITION_LIGHT_RAIN
-        if (day == 2):
-            return WeatherAPI.CONDITION_LIGHT_RAIN
-        if (day == 3):
-            return WeatherAPI.CONDITION_LIGHT_RAIN
-        if (day == 4):
-            return WeatherAPI.CONDITION_LIGHT_CLOUD_SUN
+        if day > 3:
+            raise Exception("Invalid day, should less or equal to 3")
+        return self._data[day].condition
 
-    def today_str(self):
-        return "2015-11-21"
+    @property
+    def today(self):
+        """
+        Return a object of datetime.date
+        """
+        return self._today

@@ -1,0 +1,3 @@
+for x in *.svg; do 
+    cat $x | perl -pe 's/path/path id="'`basename $x .svg`'"/' | grep path; 
+done > paste.svg
