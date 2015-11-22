@@ -5,8 +5,8 @@ FILE="weather.png"
 
 cd $FOLDER
 
-# Lock and Wake Up
-/usr/bin/powerd_test -p >/dev/null
+# Wake Up
+lipc-set-prop com.lab126.powerd wakeUp 1
 
 sleep 10
 
@@ -19,7 +19,7 @@ rm $FOLDER/$FILE
 wget http://cn-vpn.grisge.info/weather/weather.png -O $FOLDER/$FILE
 
 # Lock screen
-/usr/bin/powerd_test -h >/dev/null
+/usr/bin/powerd_test -p
 
 sleep 10
 
