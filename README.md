@@ -15,7 +15,7 @@ The changes I made:
  * Use `crontab` instead of `kite` or stop `powerd` by changing the
    `suspend_levels`.
 
- * Reorganized the `weather_script.py` by split weather API out.
+ * Reorganized the `weather_script.py` by spliting weather API out.
 
  * Change `weather-script-preprocess.svg` to fit the weather API.
 
@@ -68,7 +68,7 @@ The changes I made:
 ### Install weather display script
  * Edit the `URL` in `display-weather.sh` by pointing to your own http server.
  * Make sure kindle root mount point is writeable `mntroot rw`
- * `scp display-weather.sh root@k3w:/usr/bin`
+ * `scp display-weather.sh root@k3w:/usr/bin/`
  * Make sure `display-weather.sh` is executable via `chmod +x` on kindle.
 
 ### Setup crontab
