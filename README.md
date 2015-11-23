@@ -67,6 +67,7 @@ The changes I made:
 
 ### Install weather display script
  * Edit the `URL` in `display-weather.sh` by pointing to your own http server.
+ * Create folder `mkdir /mnt/base-us/weather`.
  * Make sure kindle root mount point is writeable `mntroot rw`
  * `scp display-weather.sh root@k3w:/usr/bin/`
  * Make sure `display-weather.sh` is executable via `chmod +x` on kindle.
@@ -108,7 +109,6 @@ The changes I made:
     `http://<your_server_hostname>/weather/weather.png`
 
 # TODO
- * Use `gasgauge-info -s 2>/dev/null` to check battery and indicate if no power.
  * Include AQI(air quality index)
 
 # Contact
