@@ -66,7 +66,7 @@ day_one = weather_obj.today
 one_day = datetime.timedelta(days=1)
 days_of_week = "Mon Tue Wed Thu Fri Sat Sun".split()
 for i, x in "TWO THREE FOUR".split():
-    output = output.replace("DAY_" + x,)
+    output = output.replace("DAY_" + x,
                         days_of_week[(day_one + (i + 1) * one_day).weekday()])
 
 # Write output
