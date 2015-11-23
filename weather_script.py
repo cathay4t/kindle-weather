@@ -38,7 +38,7 @@ import sys
 from weather_api import WeatherAPI
 
 CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
-OUTPUT="/var/www/html/weather/weather.png"
+OUTPUT = "/var/www/html/weather/weather.png"
 
 if len(sys.argv) != 4:
     print("Need 3 argument for API key, latitude, longitud")
@@ -51,31 +51,31 @@ output = codecs.open("%s/weather-script-preprocess.svg" % CODE_FOLDER, "r",
                      encoding="utf-8").read()
 
 # Update weather condition
-output = output.replace("ICON_ONE", weather_obj.condition(0));
+output = output.replace("ICON_ONE", weather_obj.condition(0))
 
-output = output.replace("ICON_TWO", weather_obj.condition(1));
+output = output.replace("ICON_TWO", weather_obj.condition(1))
 
-output = output.replace("ICON_THREE", weather_obj.condition(2));
+output = output.replace("ICON_THREE", weather_obj.condition(2))
 
-output = output.replace("ICON_FOUR", weather_obj.condition(3));
+output = output.replace("ICON_FOUR", weather_obj.condition(3))
 
 # Update hightest temp
-output = output.replace("HIGH_ONE", str(weather_obj.temp_max(0)));
+output = output.replace("HIGH_ONE", str(weather_obj.temp_max(0)))
 
-output = output.replace("HIGH_TWO", str(weather_obj.temp_max(1)));
+output = output.replace("HIGH_TWO", str(weather_obj.temp_max(1)))
 
-output = output.replace("HIGH_THREE", str(weather_obj.temp_max(2)));
+output = output.replace("HIGH_THREE", str(weather_obj.temp_max(2)))
 
-output = output.replace("HIGH_FOUR", str(weather_obj.temp_max(3)));
+output = output.replace("HIGH_FOUR", str(weather_obj.temp_max(3)))
 
 # Update lowest temp
-output = output.replace("LOW_ONE", str(weather_obj.temp_min(0)));
+output = output.replace("LOW_ONE", str(weather_obj.temp_min(0)))
 
-output = output.replace("LOW_TWO", str(weather_obj.temp_min(1)));
+output = output.replace("LOW_TWO", str(weather_obj.temp_min(1)))
 
-output = output.replace("LOW_THREE", str(weather_obj.temp_min(2)));
+output = output.replace("LOW_THREE", str(weather_obj.temp_min(2)))
 
-output = output.replace("LOW_FOUR", str(weather_obj.temp_min(3)));
+output = output.replace("LOW_FOUR", str(weather_obj.temp_min(3)))
 
 # Replace refresh time
 output = output.replace("TIME",
@@ -99,7 +99,7 @@ codecs.open("%s/weather-script-output.svg" % CODE_FOLDER,
 
 os.system("rsvg-convert --background-color=white -o "
           "%s %s/weather-script-output.svg"
-          % (OUTPUT, CODE_FOLDER));
+          % (OUTPUT, CODE_FOLDER))
 
 os.system("pngcrush -c 0 -ow %s 1>/dev/null 2>&1" %
-          OUTPUT);
+          OUTPUT)

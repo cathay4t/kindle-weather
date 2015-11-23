@@ -18,6 +18,7 @@ import datetime
 import json
 from urllib2 import urlopen
 
+
 def _fetch_json(url):
     json_str = urlopen(url).read()
     return json.loads(json_str)
@@ -53,7 +54,7 @@ class WeatherAPI(object):
         url_location = "lat=%s&lon=%s" % (lat, lon)
 
         forecast_json = _fetch_json("%s/%s/forecast/q/%s,%s.json" %
-                (WeatherAPI._BASE_API_URL, api_key, lat, lon))
+            (WeatherAPI._BASE_API_URL, api_key, lat, lon))
 
         self._data = _parse_forecast(forecast_json)
         self._today = datetime.date.today()
