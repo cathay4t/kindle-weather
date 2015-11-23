@@ -83,7 +83,7 @@ The changes I made:
 
 ## Server Side
 ### Install httpd daemon.
- * `sudo yum install httpd -y`
+ * `sudo yum install httpd pngcrush librsvg2-tools python2 -y`
  * `sudo systemctl enable httpd`
  * `sudo systemctl start httpd`
 
