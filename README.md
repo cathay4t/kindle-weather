@@ -1,7 +1,7 @@
 Kindle Weather
 
 # STOP, THIS WILL BRICK YOUR KINDLE, ONLY FOR LINUX GEEK.
-# UNLESS YOU KNOW ALL THE FOLLOWING LINUX COMMANDS, GO AWAY, THIS IS NOT FOR YOU.
+# ~~UNLESS YOU KNOW ALL THE FOLLOWING LINUX COMMANDS, GO AWAY, THIS IS NOT FOR YOU.~~
 
 # Big Thanks to Matthew Petroff for his sharing.
 
@@ -19,7 +19,7 @@ The changes I made:
 
  * Change `weather-script-preprocess.svg` to fit the weather API.
 
- * I tried to use change `weather-script-preprocess.svg` to use `<image>` tag
+ * I tried to change `weather-script-preprocess.svg` to use `<image>` tag
    for external image which allow me to easily change the icon, but I failed to
    at the rsvg-convert point. So still in embedded way.
 
@@ -97,13 +97,13 @@ The changes I made:
 */29 6-22 * * * <PATH>/weather_script.py <API_KEY> <LAT> <LON>
 ```
  * Change `<PATH>` as the folder of source code.
- * Change `<API_KEY>` as the [weather.com][1] API key string.
+ * Change `<API_KEY>` as the [weather.com][1] API key strin.
  * Change `<LAT>` and `<LON>` as latitude and lontitude of your city.
 
 ### Create initial weather PNG
  * Invoke `<PATH>/weather_script.py <API_KEY> <LAT> <LON>`.
  * Check whether you can get the weather png via:
-    http://<your_server_hostname>/weather/weather.png
+    `http://<your_server_hostname>/weather/weather.png`
 
 # TODO
  * Use `gasgauge-info -s 2>/dev/null` to check battery and indicate if no power.
