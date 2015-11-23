@@ -46,9 +46,6 @@ class WeatherAPI(object):
 
     _BASE_API_URL = "http://api.wunderground.com/api/"
 
-    CONDITION_LIGHT_RAIN = "shra"
-    CONDITION_LIGHT_CLOUD_SUN = "bkn"
-
     def __init__(self, api_key, lat, lon):
         url_api_key = "appid=%s" % api_key
         url_location = "lat=%s&lon=%s" % (lat, lon)
