@@ -19,6 +19,8 @@ The changes I made:
 
  * Change `weather-script-preprocess.svg` to fit the weather API.
 
+ * Warn user when low battery(less than 10%)
+
  * I tried to change `weather-script-preprocess.svg` to use `<image>` tag
    for external image which allow me to easily change the icon, but I failed to
    at the rsvg-convert point. So still in embedded way.
