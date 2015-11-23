@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-# Copyright (C) 2015 Red Hat, Inc.
+# Copyright (C) 2015 Gris Ge
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; If not, see <http://www.gnu.org/licenses/>.
 #
-# Author: Gris Ge <fge@redhat.com>
+# Author: Gris Ge <cnfourt@gmail.com>
 import datetime
 import json
 from urllib2 import urlopen
