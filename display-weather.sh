@@ -2,6 +2,7 @@
 
 FOLDER="/mnt/base-us/weather"
 FILE="weather.png"
+URL="http://cn-vpn.grisge.info/weather/weather.png"
 
 cd $FOLDER
 
@@ -16,7 +17,7 @@ if [ $? -ne 0 ];then
 fi
 
 rm $FOLDER/$FILE
-wget http://cn-vpn.grisge.info/weather/weather.png -O $FOLDER/$FILE
+wget $URL -O $FOLDER/$FILE
 
 # Lock screen
 /usr/bin/powerd_test -p
