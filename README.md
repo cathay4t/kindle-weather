@@ -53,7 +53,7 @@ The changes I made:
  * Execute `mntroot rw`
  * Execute `vi /etc/kdb.src/luigi/system/daemon/powerd/suspend_levels`
  * Change the number at the last line to look like(no trailing \n):
- 
+
     ```
     RG002
     40
@@ -61,7 +61,7 @@ The changes I made:
     <DATA>
     1152
     ```
-    
+
  * The `1152` here means the 7th bit(start from 0) as 0 which allows crontab
    in suspend mode. This is purely based on my guess, but it works. :)
 
@@ -78,6 +78,7 @@ The changes I made:
     ```
 */60 6-22 * * * /usr/bin/display-weather.sh
     ```
+ * This means weather report will be refreshed hourly during 6AM to 10PM.
 
 ### Reboot your kindle via `reboot` command.
 
@@ -92,7 +93,8 @@ The changes I made:
  * `sudo chmod 777 /var/www/html/weather/` or use `chown`.
 
 ### Setup crontab
- * Add this line to `crontab -e`:
+ * Add this line to `crontab -e` to refresh weather every 29 minutes during
+   6AM to 10PM:
 ```
 */29 6-22 * * * <PATH>/weather_script.py <API_KEY> <LAT> <LON>
 ```
