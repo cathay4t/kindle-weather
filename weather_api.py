@@ -26,7 +26,7 @@ def _fetch_json(url):
 
 def _parse_forecast(data_json):
     """
-    [(condition, max, min), ... ]
+    return [WeatherData]
     """
     tmp_list = []
     for data in data_json["forecast"]["simpleforecast"]["forecastday"]:
@@ -50,7 +50,8 @@ class WeatherAPI(object):
         url_api_key = "appid=%s" % api_key
         url_location = "lat=%s&lon=%s" % (lat, lon)
 
-        forecast_json = _fetch_json("%s/%s/forecast/q/%s,%s.json" %
+        forecast_json = _fetch_json(
+            "%s/%s/forecast/q/%s,%s.json" %
             (WeatherAPI._BASE_API_URL, api_key, lat, lon))
 
         self._data = _parse_forecast(forecast_json)
@@ -59,7 +60,6 @@ class WeatherAPI(object):
     def temp_max(self, day):
         """
         Input day as integer, 0 means today, 1 means tomorrow, max is 3.
-        Return
         """
         if day > 3:
             raise Exception("Invalid day, should less or equal to 3")

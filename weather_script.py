@@ -50,32 +50,18 @@ weather_obj = WeatherAPI(sys.argv[1], sys.argv[2], sys.argv[3])
 output = codecs.open("%s/weather-script-preprocess.svg" % CODE_FOLDER, "r",
                      encoding="utf-8").read()
 
-# Update weather condition
-output = output.replace("ICON_ONE", weather_obj.condition(0))
+_MAP = {
+    "ICON": WeatherAPI.condition,
+    "HIGH": WeatherAPI.temp_max,
+    "LOW": WeatherAPI.temp_min,
+}
 
-output = output.replace("ICON_TWO", weather_obj.condition(1))
+_DAYS = ["ONE", "TWO", "THREE", "FOUR"]
 
-output = output.replace("ICON_THREE", weather_obj.condition(2))
-
-output = output.replace("ICON_FOUR", weather_obj.condition(3))
-
-# Update hightest temp
-output = output.replace("HIGH_ONE", str(weather_obj.temp_max(0)))
-
-output = output.replace("HIGH_TWO", str(weather_obj.temp_max(1)))
-
-output = output.replace("HIGH_THREE", str(weather_obj.temp_max(2)))
-
-output = output.replace("HIGH_FOUR", str(weather_obj.temp_max(3)))
-
-# Update lowest temp
-output = output.replace("LOW_ONE", str(weather_obj.temp_min(0)))
-
-output = output.replace("LOW_TWO", str(weather_obj.temp_min(1)))
-
-output = output.replace("LOW_THREE", str(weather_obj.temp_min(2)))
-
-output = output.replace("LOW_FOUR", str(weather_obj.temp_min(3)))
+for x in _MAP.keys():
+    for i in range(len(_DAYS)):
+        output = output.replace("%s_%s" % (x, _DAYS[i]),
+                                "%s" % _MAP[x](weather_obj, i))
 
 # Replace refresh time
 output = output.replace("TIME",
@@ -86,12 +72,10 @@ day_one = weather_obj.today
 # Insert days of week
 one_day = datetime.timedelta(days=1)
 days_of_week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-output = output.replace("DAY_TWO",
-                        days_of_week[(day_one + 1 * one_day).weekday()])
-output = output.replace("DAY_THREE",
-                        days_of_week[(day_one + 2 * one_day).weekday()])
-output = output.replace("DAY_FOUR",
-                        days_of_week[(day_one + 3 * one_day).weekday()])
+
+for i in range(1, len(_DAYS)):
+    output = output.replace("DAY_%s" % _DAYS[i],
+                            days_of_week[(day_one + i * one_day).weekday()])
 
 # Write output
 codecs.open("%s/weather-script-output.svg" % CODE_FOLDER,
