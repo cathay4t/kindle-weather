@@ -1,6 +1,6 @@
 Kindle Weather
 
-# STOP, THIS WILL BRICK YOUR KINDLE, ONLY FOR PERSONAL USE OR OTHER LINUX GEEK.
+# STOP, THIS WILL BRICK YOUR KINDLE, ONLY FOR LINUX GEEK.
 # UNLESS YOU KNOW ALL THE FOLLOWING LINUX COMMANDS, GO AWAY, THIS IS NOT FOR YOU.
 
 # Big Thanks to Matthew Petroff for his sharing.
@@ -53,6 +53,7 @@ The changes I made:
  * Execute `mntroot rw`
  * Execute `vi /etc/kdb.src/luigi/system/daemon/powerd/suspend_levels`
  * Change the number at the last line to look like(no trailing \n):
+ 
     ```
     RG002
     40
@@ -60,6 +61,7 @@ The changes I made:
     <DATA>
     1152
     ```
+    
  * The `1152` here means the 7th bit(start from 0) as 0 which allows crontab
    in suspend mode. This is purely based on my guess, but it works. :)
 
@@ -72,6 +74,7 @@ The changes I made:
 ### Setup crontab
  * Execute `mntroot rw`.
  * Add this line into `/etc/crontab/root`
+
     ```
 */60 6-22 * * * /usr/bin/display-weather.sh
     ```
@@ -109,12 +112,7 @@ The changes I made:
 # Contact
  * https://github.com/cathay4t/kindle-weather/issues
 
-# Donate
- * Create a pull request or report an issue in any of [my project][5] would be
-   enough. Thank you.
-
 [1]: http://www.wunderground.com/weather/api/d/login.html
 [2]: http://wiki.mobileread.com/wiki/Kindle_Hacks_Information
 [3]: https://blitiri.com.ar/p/other/kindle/#usb-networking
 [4]: http://creativecommons.org/publicdomain/zero/1.0/
-[5]: https://github.com/cathay4t
