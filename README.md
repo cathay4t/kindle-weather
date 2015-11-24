@@ -53,17 +53,7 @@ The changes I made:
 **Skip this if you have USB cable always connected to your kindle.**
 
  * Execute `mntroot rw`
- * Execute `vi /etc/kdb.src/luigi/system/daemon/powerd/suspend_levels`
- * Change the number at the last line to look like(no trailing \n):
-
-    ```
-    RG002
-    40
-     0x4C0 (fw at 10, cmd 7, wan/wifi 6)
-    <DATA>
-    1152
-    ```
-
+ * Execute `sed -i -e 's/1216/1152/' /etc/kdb.src/luigi/system/daemon/powerd/suspend_levels`
  * The `1152` here means the 7th bit(start from 0) as 0 which allows crontab
    in suspend mode. This is purely based on my guess, but it works. :)
 
