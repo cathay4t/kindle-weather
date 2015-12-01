@@ -40,6 +40,7 @@ from argparse import ArgumentParser
 
 CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
 OUTPUT = "/var/www/html/weather/weather.png"
+TMP_OUTPUT ="%s/weather.png" % CODE_FOLDER
 SVG_PORTRAIT_FILE = "%s/weather-script-preprocess.svg" % CODE_FOLDER
 SVG_LANSCAPE_FILE = "%s/weather-script-preprocess-landscape.svg" % CODE_FOLDER
 SVG_FILE = SVG_PORTRAIT_FILE
@@ -91,6 +92,7 @@ for i in range(MAX_WEATHER_DAY_COUNT + 1):
 codecs.open(SVG_OUTPUT, "w", encoding="utf-8").write(output)
 
 os.system("rsvg-convert --background-color=white -o "
-          "%s %s" % (OUTPUT, SVG_OUTPUT))
+          "%s %s" % (TMP_OUTPUT, SVG_OUTPUT))
 
-os.system("pngcrush -c 0 -ow %s 1>/dev/null 2>&1" % OUTPUT)
+os.system("pngcrush -c 0 -ow %s 1>/dev/null 2>&1" % TMP_OUTPUT)
+os.system("mv -f '%s' '%s'" % (TMP_OUTPUT, OUTPUT))
