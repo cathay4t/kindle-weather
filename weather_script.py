@@ -37,6 +37,7 @@ import sys
 
 from weather_api import WeatherAPI
 from argparse import ArgumentParser
+from aqi import aqi_get
 
 CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
 OUTPUT = "/var/www/html/weather/weather.png"
@@ -46,16 +47,20 @@ SVG_LANSCAPE_FILE = "%s/weather-script-preprocess-landscape.svg" % CODE_FOLDER
 SVG_FILE = SVG_PORTRAIT_FILE
 SVG_OUTPUT = "%s/weather-script-output.svg" % CODE_FOLDER
 MAX_WEATHER_DAY_COUNT = 3
+AQI_CITY=None
 
 if len(sys.argv) < 4:
     print("Need 3 or more argument for API key, latitude, longitud, "
-          "[is_landscape]")
+          "[is_landscape] [aqi_city_name]")
     exit(1)
 
 weather_obj = WeatherAPI(sys.argv[1], sys.argv[2], sys.argv[3])
 
 if len(sys.argv) >= 5 and sys.argv[4] != 0:
     SVG_FILE = SVG_LANSCAPE_FILE
+
+if len(sys.argv) >= 6 and sys.argv[5]:
+    AQI_CITY = sys.argv[5]
 
 # Open SVG to process
 output = codecs.open(SVG_FILE, "r", encoding="utf-8").read()
@@ -76,7 +81,8 @@ output = output.replace("$TIME",
                         datetime.datetime.now().strftime("%b %d %a %H:%M"))
 
 # Updaet AQI. TODO(Gris Ge): still place holder yet.
-output = output.replace("$AQI", "Unknown")
+if AQI_CITY is not None:
+    output = output.replace("$AQI", str(aqi_get(AQI_CITY)))
 
 day_one = weather_obj.today
 
