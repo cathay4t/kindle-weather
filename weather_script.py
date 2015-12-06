@@ -41,17 +41,24 @@ from aqi import aqi_get
 
 CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
 OUTPUT = "/var/www/html/weather/weather.png"
-TMP_OUTPUT ="%s/weather.png" % CODE_FOLDER
+TMP_OUTPUT = "%s/weather.png" % CODE_FOLDER
 SVG_PORTRAIT_FILE = "%s/weather-script-preprocess.svg" % CODE_FOLDER
 SVG_LANSCAPE_FILE = "%s/weather-script-preprocess-landscape.svg" % CODE_FOLDER
 SVG_FILE = SVG_PORTRAIT_FILE
 SVG_OUTPUT = "%s/weather-script-output.svg" % CODE_FOLDER
 MAX_WEATHER_DAY_COUNT = 3
-AQI_CITY=None
+AQI_CITY = None
+
+
+def _exec(cmd):
+    rc = os.system(cmd)
+    if (rc != 0):
+        print("`%s` failed with error %d" % (cmd, rc))
+        exit(rc)
 
 if len(sys.argv) < 4:
     print("Need 3 or more argument for API key, latitude, longitud, "
-          "[is_landscape] [aqi_city_name]")
+          "[is_landscape] [aqi_city_name_for_landscape]")
     exit(1)
 
 weather_obj = WeatherAPI(sys.argv[1], sys.argv[2], sys.argv[3])
@@ -97,8 +104,7 @@ for i in range(MAX_WEATHER_DAY_COUNT + 1):
 # Write output
 codecs.open(SVG_OUTPUT, "w", encoding="utf-8").write(output)
 
-os.system("rsvg-convert --background-color=white -o "
-          "%s %s" % (TMP_OUTPUT, SVG_OUTPUT))
-
-os.system("pngcrush -c 0 -ow %s 1>/dev/null 2>&1" % TMP_OUTPUT)
-os.system("mv -f '%s' '%s'" % (TMP_OUTPUT, OUTPUT))
+_exec("rsvg-convert --background-color=white -o %s %s" %
+      (TMP_OUTPUT, SVG_OUTPUT))
+_exec("pngcrush -c 0 -ow %s 1>/dev/null 2>&1" % TMP_OUTPUT)
+_exec("mv -f '%s' '%s'" % (TMP_OUTPUT, OUTPUT))

@@ -14,14 +14,21 @@
 # License along with this library; If not, see <http://www.gnu.org/licenses/>.
 #
 # Author: Gris Ge <cnfourt@gmail.com>
-from urllib2 import urlopen
+import urllib2
 from HTMLParser import HTMLParser
 
 _AQI_URL = 'http://aqicn.org/city/<CITY>/m'
 _AQI_DIV_NAME = 'xatzcaqv'
+_HTTP_HEADER = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:42.0) "
+                  "Gecko/20100101 Firefox/42.0",
+    "Accept": "text/html,application/xhtml+xml,application/xml;"
+              "q=0.9,*/*;q=0.8",
+}
+
 
 class _MyHTMLParser(HTMLParser):
-    #TODO(Gris Ge): Stop parsing once found.
+    # TODO(Gris Ge): Stop parsing once found.
     def __init__(self):
         HTMLParser.__init__(self)
         self._flag_found_aqi_div = False
@@ -47,8 +54,11 @@ class _MyHTMLParser(HTMLParser):
         if self._flag_found_aqi_div:
             self.aqi = data
 
+
 def _fetch_html(url):
-    return urlopen(url).read()
+    request = urllib2.Request(url, headers=_HTTP_HEADER)
+    return urllib2.urlopen(request).read()
+
 
 def aqi_get(city_name):
     '''

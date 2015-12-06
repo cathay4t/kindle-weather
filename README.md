@@ -92,7 +92,8 @@ The changes I made:
  * Change `<API_KEY>` as the [weather.com][1] API key strin.
  * Change `<LAT>` and `<LON>` as latitude and lontitude of your city.
  * Change `<IS_LANSCAPE>` to 1 if you put kindle into landscape mode. Default 0.
- * Change `<AQI_CITY>` to city name (like: 'chengdu'). Default NULL.
+ * Change `<AQI_CITY>` to city name (like: 'chengdu'). Default NULL. Only
+   valid for landscape mode yet.
 
 ### Create initial weather PNG
  * Invoke `<PATH>/weather_script.py <API_KEY> <LAT> <LON>`.
