@@ -49,14 +49,6 @@ The changes I made:
    initial login, then change root password, change ssh config to allow wifi
    login, set as auto start, reboot.
 
-### Allow cron running in suspend mode.
-**Skip this if you have USB cable always connected to your kindle.**
-
- * Execute `mntroot rw`
- * Execute `sed -i -e 's/1216/1152/' /etc/kdb.src/luigi/system/daemon/powerd/suspend_levels`
- * The `1152` here means the 7th bit(start from 0) as 0 which allows crontab
-   in suspend mode. This is purely based on my guess, but it works. :)
-
 ### Install weather display script
  * Edit the `URL` in `display-weather.sh` by pointing to your own http server.
  * Create folder `mkdir /mnt/base-us/weather`.
@@ -71,7 +63,12 @@ The changes I made:
     ```
 */60 6-22 * * * /usr/bin/display-weather.sh
     ```
- * This means weather report will be refreshed hourly during 6AM to 10PM.
+ * Changed above line to suit your needs.
+
+### Keep your kindle connected to a USB power during use.
+ * I(Gris Ge) don't suggest your to hack kindle in order to stop the auto
+   suspend, you might face batter drain. Please collect your kindle to a USB
+   charger always.
 
 ### Reboot your kindle via `reboot` command.
 
@@ -89,11 +86,13 @@ The changes I made:
  * Add this line to `crontab -e` to refresh weather every 29 minutes during
    6AM to 10PM:
 ```
-*/29 6-22 * * * <PATH>/weather_script.py <API_KEY> <LAT> <LON>
+*/29 6-22 * * * <PATH>/weather_script.py <API_KEY> <LAT> <LON> <IS_LANSCAPE> <AQI_CITY>
 ```
  * Change `<PATH>` as the folder of source code.
  * Change `<API_KEY>` as the [weather.com][1] API key strin.
  * Change `<LAT>` and `<LON>` as latitude and lontitude of your city.
+ * Change `<IS_LANSCAPE>` to 1 if you put kindle into landscape mode. Default 0.
+ * Change `<AQI_CITY>` to city name (like: 'chengdu'). Default NULL.
 
 ### Create initial weather PNG
  * Invoke `<PATH>/weather_script.py <API_KEY> <LAT> <LON>`.
@@ -101,7 +100,7 @@ The changes I made:
     `http://<your_server_hostname>/weather/weather.png`
 
 # TODO
- * Include AQI(air quality index)
+ * None
 
 # Contact
  * https://github.com/cathay4t/kindle-weather/issues
