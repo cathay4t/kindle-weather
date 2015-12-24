@@ -61,7 +61,7 @@ The changes I made:
  * Add this line into `/etc/crontab/root`
 
     ```
-*/60 6-22 * * * /usr/bin/display-weather.sh
+    5 6-22 * * * /usr/bin/display-weather.sh
     ```
  * Changed above line to suit your needs.
 
