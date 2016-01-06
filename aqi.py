@@ -63,7 +63,7 @@ def _fetch_html(url):
 def aqi_get(city_name):
     '''
     Return integer for AQI of given city and raise error if failure.
-    Data is from parsed from twitter US account.
+    Data is from parsed from aqicn.org webpage.
     '''
     url = _AQI_URL.replace('<CITY>', city_name)
     html_content = _fetch_html(url)
