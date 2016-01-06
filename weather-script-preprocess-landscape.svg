@@ -35,6 +35,9 @@
            <text font-size="40px" x="200" y="90">
            AQI: $AQI
            </text>
+           <text font-size="30px" x="200" y="140">
+           SCI: $SCI $SCHG
+           </text>
            <use xlink:href="#$I0" height="325" width="325" 
                 transform="scale(3.25) translate(10 40)"
                 />

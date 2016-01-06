@@ -38,6 +38,7 @@ import sys
 from weather_api import WeatherAPI
 from argparse import ArgumentParser
 from aqi import aqi_get
+from sci import sci_get
 
 CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
 OUTPUT = "/var/www/html/weather/weather.png"
@@ -90,6 +91,10 @@ output = output.replace("$TIME",
 # Updaet AQI. TODO(Gris Ge): still place holder yet.
 if AQI_CITY is not None:
     output = output.replace("$AQI", str(aqi_get(AQI_CITY)))
+
+(sci, sci_change) = sci_get()
+output = output.replace("$SCI", str(sci))
+output = output.replace("$SCHG", str(sci_change))
 
 day_one = weather_obj.today
 
