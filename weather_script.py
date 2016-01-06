@@ -49,6 +49,7 @@ SVG_FILE = SVG_PORTRAIT_FILE
 SVG_OUTPUT = "%s/weather-script-output.svg" % CODE_FOLDER
 MAX_WEATHER_DAY_COUNT = 3
 AQI_CITY = None
+INCLUDE_SCI = False
 
 
 def _exec(cmd):
@@ -59,16 +60,19 @@ def _exec(cmd):
 
 if len(sys.argv) < 4:
     print("Need 3 or more argument for API key, latitude, longitud, "
-          "[is_landscape] [aqi_city_name_for_landscape]")
+          "[is_landscape] [aqi_city_name_for_landscape] [include_sci]")
     exit(1)
 
 weather_obj = WeatherAPI(sys.argv[1], sys.argv[2], sys.argv[3])
 
-if len(sys.argv) >= 5 and sys.argv[4] != 0:
+if len(sys.argv) >= 5 and sys.argv[4] != '0':
     SVG_FILE = SVG_LANSCAPE_FILE
 
 if len(sys.argv) >= 6 and sys.argv[5]:
     AQI_CITY = sys.argv[5]
+
+if len(sys.argv) >= 7 and sys.argv[6] != '0':
+    INCLUDE_SCI = True
 
 # Open SVG to process
 output = codecs.open(SVG_FILE, "r", encoding="utf-8").read()
@@ -92,9 +96,12 @@ output = output.replace("$TIME",
 if AQI_CITY is not None:
     output = output.replace("$AQI", str(aqi_get(AQI_CITY)))
 
-(sci, sci_change) = sci_get()
-output = output.replace("$SCI", str(sci))
-output = output.replace("$SCHG", str(sci_change))
+if INCLUDE_SCI:
+    (sci, sci_change) = sci_get()
+    output = output.replace("$SCI", str(sci))
+    output = output.replace("$SCHG", str(sci_change))
+else:
+    output = output.replace("SCI: $SCI $SCHG", "")
 
 day_one = weather_obj.today
 
