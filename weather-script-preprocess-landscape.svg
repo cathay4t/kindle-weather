@@ -39,7 +39,7 @@
            SCI: $SCI $SCHG
            </text>
            <use xlink:href="#$I0" height="325" width="325" 
-                transform="scale(3.25) translate(10 40)"
+                transform="scale(3.25) translate(10 50)"
                 />
            <text font-size="60px" x="180" y="570" style="text-anchor:end;">
            $H0°C
