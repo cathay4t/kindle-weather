@@ -15,44 +15,17 @@
 #
 # Author: Gris Ge <cnfourt@gmail.com>
 import urllib2
-from HTMLParser import HTMLParser
+import re
 
 _AQI_URL = 'http://aqicn.org/city/<CITY>/m'
-_AQI_DIV_NAME = 'xatzcaqv'
+_AQI_DIV_NAME = 'aqi'
+_AQI_REGEX = re.compile('summary.+\+([0-9]+)\+')
 _HTTP_HEADER = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:42.0) "
                   "Gecko/20100101 Firefox/42.0",
     "Accept": "text/html,application/xhtml+xml,application/xml;"
               "q=0.9,*/*;q=0.8",
 }
-
-
-class _MyHTMLParser(HTMLParser):
-    # TODO(Gris Ge): Stop parsing once found.
-    def __init__(self):
-        HTMLParser.__init__(self)
-        self._flag_found_aqi_div = False
-        self.aqi = 0
-
-    def handle_starttag(self, tag, attrs):
-        if self.aqi != 0:
-            return
-
-        if tag != 'div':
-            return
-
-        tmp_dict = dict(attrs)
-
-        if tmp_dict.get('id') == _AQI_DIV_NAME:
-            self._flag_found_aqi_div = True
-            return
-
-    def handle_endtag(self, tag):
-        self._flag_found_aqi_div = False
-
-    def handle_data(self, data):
-        if self._flag_found_aqi_div:
-            self.aqi = data
 
 
 def _fetch_html(url):
@@ -67,6 +40,10 @@ def aqi_get(city_name):
     '''
     url = _AQI_URL.replace('<CITY>', city_name)
     html_content = _fetch_html(url)
-    parser = _MyHTMLParser()
-    parser.feed(html_content)
-    return int(parser.aqi)
+    for line in html_content.split("\n"):
+        match = _AQI_REGEX.search(line)
+        if match:
+            return int(match.group(1))
+    return -1
+
+print aqi_get("chengdu")
