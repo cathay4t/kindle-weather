@@ -45,5 +45,3 @@ def aqi_get(city_name):
         if match:
             return int(match.group(1))
     return -1
-
-print aqi_get("chengdu")
