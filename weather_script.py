@@ -40,17 +40,6 @@ from argparse import ArgumentParser
 from aqi import aqi_get
 from sci import sci_get
 
-CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
-OUTPUT = "/var/www/html/weather/weather.png"
-TMP_OUTPUT = "%s/weather.png" % CODE_FOLDER
-SVG_PORTRAIT_FILE = "%s/weather-script-preprocess.svg" % CODE_FOLDER
-SVG_LANSCAPE_FILE = "%s/weather-script-preprocess-landscape.svg" % CODE_FOLDER
-SVG_FILE = SVG_PORTRAIT_FILE
-SVG_OUTPUT = "%s/weather-script-output.svg" % CODE_FOLDER
-MAX_WEATHER_DAY_COUNT = 3
-AQI_CITY = None
-INCLUDE_SCI = False
-
 
 def _exec(cmd):
     rc = os.system(cmd)
@@ -58,21 +47,46 @@ def _exec(cmd):
         print("`%s` failed with error %d" % (cmd, rc))
         exit(rc)
 
-if len(sys.argv) < 4:
-    print("Need 3 or more argument for API key, latitude, longitud, "
-          "[is_landscape] [aqi_city_name_for_landscape] [include_sci]")
-    exit(1)
+CODE_FOLDER = os.path.dirname(os.path.realpath(__file__))
 
-weather_obj = WeatherAPI(sys.argv[1], sys.argv[2], sys.argv[3])
+OUTPUT = os.environ.get("KW_OUTPUT", "/var/www/html/weather/weather.png")
+
+TMP_OUTPUT = "%s/weather.png" % CODE_FOLDER
+SVG_PORTRAIT_FILE = "%s/weather-script-preprocess.svg" % CODE_FOLDER
+SVG_LANSCAPE_LEFT = "%s/weather-script-preprocess-landscape.svg" % CODE_FOLDER
+SVG_LANSCAPE_RIGHT = "%s/weather-script-preprocess-landscape-right.svg" % \
+    CODE_FOLDER
+SVG_FILE = SVG_PORTRAIT_FILE
+SVG_OUTPUT = "%s/weather-script-output.svg" % CODE_FOLDER
+MAX_WEATHER_DAY_COUNT = 3
+INCLUDE_SCI = False
 
 if len(sys.argv) >= 5 and sys.argv[4] != '0':
     SVG_FILE = SVG_LANSCAPE_FILE
 
-if len(sys.argv) >= 6 and sys.argv[5]:
-    AQI_CITY = sys.argv[5]
+if os.environ.get("KW_LANSCAPE_RIGHT") is not None:
+    SVG_FILE = SVG_LANSCAPE_RIGHT
+elif os.environ.get("KW_LANSCAPE_LEFT") is not None:
+    SVG_FILE = SVG_LANSCAPE_LEFT
+else:
+    SVG_FILE = SVG_PORTRAIT_FILE
 
-if len(sys.argv) >= 7 and sys.argv[6] != '0':
+
+AQI_CITY = os.environ.get("KW_AQI_CITY", None)
+
+if os.environ.get("KW_INCLUDE_SCI") is not None:
     INCLUDE_SCI = True
+
+WEATHER_KEY = os.environ.get("KW_WEATHER_KEY")
+LATITUDE = os.environ.get("KW_LATITUDE")
+LONGTITUDE = os.environ.get("KW_LONGTITUDE")
+
+if WEATHER_KEY is None or LATITUDE is None or LONGTITUDE is None:
+    print("Need KW_WEATHER_KEY and KW_LATITUDE and KW_LONGTITUDE "
+          "environment variables")
+    exit(1)
+
+weather_obj = WeatherAPI(WEATHER_KEY, LATITUDE, LONGTITUDE)
 
 # Open SVG to process
 output = codecs.open(SVG_FILE, "r", encoding="utf-8").read()
