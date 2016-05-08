@@ -83,17 +83,31 @@ The changes I made:
  * `sudo chmod 777 /var/www/html/weather/` or use `chown`.
 
 ### Setup crontab
- * Add this line to `crontab -e` to refresh weather every 29 minutes during
-   6AM to 10PM:
-```
-*/29 6-22 * * * <PATH>/weather_script.py <API_KEY> <LAT> <LON> <IS_LANSCAPE> <AQI_CITY>
-```
- * Change `<PATH>` as the folder of source code.
- * Change `<API_KEY>` as the [weather.com][1] API key strin.
- * Change `<LAT>` and `<LON>` as latitude and lontitude of your city.
- * Change `<IS_LANSCAPE>` to 1 if you put kindle into landscape mode. Default 0.
- * Change `<AQI_CITY>` to city name (like: 'chengdu'). Default NULL. Only
-   valid for landscape mode yet.
+ * Create a script named as kindle_weather.sh like below:
+
+    ```
+export KW_INCLUDE_SCI=1
+# ^ Include China Shanghai Composite index.
+export KW_LATITUDE=30.6586
+export KW_LONGTITUDE=104.0647
+export KW_WEATHER_KEY="<I_WILL_NOT_TELL_YOU>"
+# ^ Weather.com API key
+export KW_AQI_CITY="chengdu"
+# ^ aqicn.org city name.
+export KW_LANSCAPE_LEFT=1
+# ^ Lanscape left mode(usb port at your right side).
+#   KW_LANSCAPE_RIGHT for usb port at your left side.
+export KW_OUTPUT="/var/www/html/weather/weather.png"
+
+/home/fge/Source/kindle-weather/weather_script.py
+    ```
+
+ * Add this line to `crontab -e` to refresh weather every 30 minutes
+   during 6AM to 10PM:
+
+    ```
+0,30 6-22 * * * /home/fge/bin/kindle_weather.sh 1>/dev/null 2>/dev/null
+    ```
 
 ### Create initial weather PNG
  * Invoke `<PATH>/weather_script.py <API_KEY> <LAT> <LON>`.
@@ -101,7 +115,7 @@ The changes I made:
     `http://<your_server_hostname>/weather/weather.png`
 
 # TODO
- * None
+ * Include a TODO list or note.
 
 # Contact
  * https://github.com/cathay4t/kindle-weather/issues
