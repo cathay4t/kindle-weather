@@ -80,13 +80,18 @@ if os.environ.get("KW_INCLUDE_SCI") is not None:
 WEATHER_KEY = os.environ.get("KW_WEATHER_KEY")
 LATITUDE = os.environ.get("KW_LATITUDE")
 LONGTITUDE = os.environ.get("KW_LONGTITUDE")
+WEATHER_AIRPORT = os.environ.get("KW_AIRPORT")
 
-if WEATHER_KEY is None or LATITUDE is None or LONGTITUDE is None:
-    print("Need KW_WEATHER_KEY and KW_LATITUDE and KW_LONGTITUDE "
-          "environment variables")
+if WEATHER_KEY is None:
+    print("Need KW_WEATHER_KEY environment variables")
     exit(1)
 
-weather_obj = WeatherAPI(WEATHER_KEY, LATITUDE, LONGTITUDE)
+weather_obj = WeatherAPI(WEATHER_KEY)
+
+if WEATHER_AIRPORT:
+    weather_obj.set_airport_code(WEATHER_AIRPORT)
+else:
+    weather_obj.set_lat_lon(LATITUDE, LONGTITUDE)
 
 # Open SVG to process
 output = codecs.open(SVG_FILE, "r", encoding="utf-8").read()

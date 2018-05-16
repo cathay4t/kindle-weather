@@ -46,16 +46,24 @@ class WeatherAPI(object):
 
     _BASE_API_URL = "http://api.wunderground.com/api/"
 
-    def __init__(self, api_key, lat, lon):
-        url_api_key = "appid=%s" % api_key
-        url_location = "lat=%s&lon=%s" % (lat, lon)
+    def __init__(self, api_key):
+        self._api_key = api_key
+        self._today = datetime.date.today()
 
+    def set_lat_lon(self, lat, lon):
         forecast_json = _fetch_json(
             "%s/%s/forecast/q/%s,%s.json" %
-            (WeatherAPI._BASE_API_URL, api_key, lat, lon))
+            (WeatherAPI._BASE_API_URL, self._api_key, lat, lon))
 
         self._data = _parse_forecast(forecast_json)
-        self._today = datetime.date.today()
+
+    def set_airport_code(self, airport_code):
+        forecast_json = _fetch_json(
+            "%s/%s/forecast/q/%s.json" %
+            (WeatherAPI._BASE_API_URL, self._api_key, airport_code))
+
+        self._data = _parse_forecast(forecast_json)
+
 
     def temp_max(self, day):
         """

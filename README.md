@@ -90,6 +90,8 @@ export KW_INCLUDE_SCI=1
 # ^ Include China Shanghai Composite index.
 export KW_LATITUDE=30.6586
 export KW_LONGTITUDE=104.0647
+# ^ If you have airport in your city, use something like `KW_AIRPORT=CTU`
+#   instead
 export KW_WEATHER_KEY="<I_WILL_NOT_TELL_YOU>"
 # ^ Weather.com API key
 export KW_AQI_CITY="chengdu"
